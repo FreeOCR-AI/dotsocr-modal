@@ -68,6 +68,8 @@ def main(
                 ],
             }
         ],
+        temperature=0.1,
+        max_tokens=16000,
     )
 
     typer.echo(response.choices[0].message.content)

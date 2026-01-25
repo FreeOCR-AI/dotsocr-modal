@@ -48,3 +48,19 @@ The following constants in `vllm-inference.py` can be adjusted to tune performan
 | :---------------------- | :------------ | :------------------------------------------------------------------------------ |
 | `GPU_CONFIG`            | `"A10:1"`     | The GPU type and count used for inference.                                      |
 | `MAX_CONCURRENT_INPUTS` | `16`          | Maximum concurrent requests per replica. Tune based on VRAM usage.              |
+
+## Stress Testing
+
+Use the `stress_test.py` script to perform concurrent requests against your deployed server. This is useful for evaluating performance and stability when testing different GPU configurations and concurrency levels.
+
+### Usage
+
+```bash
+python stress_test.py <folder_containing_images> --concurrency 5 --url <MODAL_URL>/v1
+```
+
+| Option            | Description                                      |
+| :---------------- | :----------------------------------------------- |
+| `--concurrency`   | Number of concurrent requests to maintain.       |
+| `--url`           | The base URL of your deployed Modal app (with `/v1`). |
+| `--model`         | The model name (defaults to `rednote-hilab/dots.ocr`). |
