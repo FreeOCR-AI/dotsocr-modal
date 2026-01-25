@@ -3,7 +3,6 @@ import modal
 # configuration for the vLLM server
 GPU_CONFIG = "A10:1"
 MAX_CONCURRENT_INPUTS = 16  # how many requests can one replica handle? tune carefully!
-FAST_BOOT = True
 
 # constants
 MINUTES = 60  # seconds
@@ -19,7 +18,7 @@ vllm_image = (
     modal.Image.from_registry("nvidia/cuda:12.8.0-devel-ubuntu22.04", add_python="3.12")
     .entrypoint([])
     .uv_pip_install(
-        "vllm==0.14.1",
+        "vllm==0.13.0",
         "huggingface-hub==0.36.0",
     )
     .env({"HF_XET_HIGH_PERFORMANCE": "1"})  # faster model transfers
@@ -57,19 +56,14 @@ def serve():
         "--async-scheduling",
         "--gpu-memory-utilization",
         "0.95",
+        "--tensor-parallel-size",
+        "1",
         "--host",
         "0.0.0.0",
         "--port",
         str(VLLM_PORT),
     ]
 
-    # enforce-eager disables both Torch compilation and CUDA graph capture
-    # default is no-enforce-eager. see the --compilation-config flag for tighter control
-    cmd += ["--enforce-eager" if FAST_BOOT else "--no-enforce-eager"]
-
-    # assume multiple GPUs are for splitting up large matrix multiplications
-    cmd += ["--tensor-parallel-size", "1"]
-
     print(*cmd)
 
-    subprocess.run(cmd)
+    subprocess.Popen(" ".join(cmd), shell=True)

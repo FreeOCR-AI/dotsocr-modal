@@ -48,4 +48,3 @@ The following constants in `vllm-inference.py` can be adjusted to tune performan
 | :---------------------- | :------------ | :------------------------------------------------------------------------------ |
 | `GPU_CONFIG`            | `"A10:1"`     | The GPU type and count used for inference.                                      |
 | `MAX_CONCURRENT_INPUTS` | `16`          | Maximum concurrent requests per replica. Tune based on VRAM usage.              |
-| `FAST_BOOT`             | `True`        | If `True`, enables `--enforce-eager` for faster startup (disables CUDA graphs). |
