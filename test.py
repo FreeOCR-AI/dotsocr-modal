@@ -1,9 +1,12 @@
 import base64
+import json
 import os
 from typing import Annotated
 
 import typer
 from openai import OpenAI
+
+from format_transformer import layoutjson2md
 
 app = typer.Typer()
 
@@ -71,8 +74,9 @@ def main(
         temperature=0.1,
         max_tokens=16000,
     )
-
-    typer.echo(response.choices[0].message.content)
+    content = response.choices[0].message.content
+    typer.echo(content)
+    typer.echo(layoutjson2md(json.loads(content)))
 
 
 if __name__ == "__main__":
